@@ -3,6 +3,7 @@ try:
     import sys
     import time
     import math
+    import pandas
     import database
     import file_writer
     from tkinter import *
@@ -10,10 +11,12 @@ try:
     from settings import Settings
     from tkinter import messagebox
     from tkinter import colorchooser
-    import pandas
+    
 except ModuleNotFoundError:
     import os
-    os.system("batch2.bat")
+    import sys
+    os.system("files\\batch.bat")
+    sys.exit()
     
 
 

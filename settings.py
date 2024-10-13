@@ -1,3 +1,4 @@
+import configparser
 import tkinter as tk
 import tkinter.ttk as ttk
 from database import User
@@ -10,8 +11,8 @@ class Settings:
         if Settings.state == 1:
             Settings.state = 0
 
-            self.Set_win = tk.Tk()
-            #self.Set_win.wm_transient(mainWindow)
+            self.Set_win = tk.Toplevel(mainWindow)
+            self.Set_win.wm_transient(mainWindow)
             self.Set_win.resizable(0, 0)
             self.Set_win.title("Settings")
             self.Set_win.geometry("800x600+225+70")
@@ -83,24 +84,29 @@ class Settings:
             pass
 
         self.destroy_widgets()
-        obj = database.Return_settings("databases/settings.db")
         
-        settings = obj.gain_settings()
+        self.config = configparser.ConfigParser()
+        self.config.read("files/configuration.ini")
+        self.theme = self.config.get("SectionOne","theme")
+        self.fontstyle = self.config.get("SectionTwo","font")
         
         FONT = ["Calibri", "Helvetica", "Arial", "Roboto", "Segoe UI"]
         
         defaultFont = tk.StringVar()
+        print(self.fontstyle)
+        print(self.theme)
+        defaultFont.set(self.fontstyle)
 
         ttk.Label(self.right_frame,text="Font", style="H.TLabel", justify="center").place(relx=0.10, rely=0.10, anchor="w")
         ttk.Combobox(self.right_frame, textvariable=defaultFont, values=FONT, state="readonly").place(relx=0.20, rely=0.10, anchor="w")
 
         backgroundTheme = tk.IntVar()
-        backgroundTheme.set(0)
+        backgroundTheme.set(self.theme)
         ttk.Label(self.right_frame, text="Background", style="H.TLabel").place(relx=0.05, rely=0.20, anchor="w")
-        ttk.Radiobutton(self.right_frame, variable=backgroundTheme, value=0).place(relx=0.22, rely=0.20, anchor="w")
+        ttk.Radiobutton(self.right_frame, variable=backgroundTheme, value="light").place(relx=0.22, rely=0.20, anchor="w")
         ttk.Label(self.right_frame, text="light", style="S.TLabel").place(relx=0.25, rely=0.20, anchor="w")
 
-        ttk.Radiobutton(self.right_frame, variable=backgroundTheme, value=1).place(relx=0.36, rely=0.20, anchor="w")
+        ttk.Radiobutton(self.right_frame, variable=backgroundTheme, value="dark").place(relx=0.36, rely=0.20, anchor="w")
         ttk.Label(self.right_frame, text="dark", style="S.TLabel").place(relx=0.39, rely=0.20, anchor="w")
 
         ttk.Button(self.right_frame, text="Apply Changes", command=ApplyChanges).place(relx=0.45, rely=0.30, anchor="w")
@@ -167,7 +173,5 @@ class Settings:
     def close_window(self):
         Settings.state = 1
         self.Set_win.destroy()
-        
 
-obj = Settings(None) 
 
