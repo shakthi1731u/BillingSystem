@@ -3,7 +3,6 @@ try:
     import sys
     import time
     import math
-    import pandas
     import database
     import file_writer
     from tkinter import *
@@ -105,7 +104,7 @@ def edit_menu(event):
             child9.resizable(False, False)
             child9.geometry("600x400+350+100")
 
-            icon = PhotoImage(file="images/icons8-edit.gif")
+            icon = PhotoImage(file="images\\icons8-edit.gif")
             child9.iconphoto(False, icon)
 
             styler = Style()
@@ -141,7 +140,7 @@ def edit_menu(event):
             Label(child9, text="""-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------""", 
                             style="N.TLabel").place(anchor="w", rely=0.40)
 
-            obj = database.TEMP("databases/temp.db")
+            obj = database.TEMP("databases\\temp.db")
 
             value  = obj.return_specific(row[-1])
             
@@ -178,7 +177,7 @@ def remove_everything():
     codeEntry.set("0")
     priceEntry.set("0")
 
-    obj = database.TEMP("databases/temp.db")
+    obj = database.TEMP("databases\\temp.db")
     obj.remove_everything()
 
     return
@@ -228,7 +227,7 @@ def help_menu(event=None):
         child2.config(background="#52a358")
         child2.geometry("350x200+450+200")
 
-        img = PhotoImage(file="images\information.png")
+        img = PhotoImage(file="images\\information.png")
         child2.iconphoto(False, img)
 
         Label(child2, text="This app is designed for educational purpose \n\t in 2022 by sptc students", font=("Roboto", 10),
@@ -259,7 +258,7 @@ def close_window2(event=None, window=None):
 # by prompting yes or no messagebox on the screen
 # if yes get clicked then main windows will close else not
 def close_window(event=None):  
-    obj = database.TEMP("databases/temp.db")
+    obj = database.TEMP("databases\\temp.db")
     if len(treeview.get_children()) >= 1:
         yes_or_no = messagebox.askyesno("Ask Question", "Some finished progress is waiting, Do you want to Save to Memory ?".upper())
         if yes_or_no:
@@ -290,7 +289,7 @@ def add_stock(event=None):
     # this function responsible for validation and insertion of data
     # into database
     def insert():
-        obj = database.DataBase1("databases/Database.db")
+        obj = database.DataBase1("databases\\Database.db")
         row = obj.return_everything()
 
         if product_name.get() is None:
@@ -338,7 +337,7 @@ def add_stock(event=None):
         pro_size = StringVar()
         pro_size.set("Small")
 
-        add_icon_image = PhotoImage(file="images/add_icon.png")
+        add_icon_image = PhotoImage(file="images\\add_icon.png")
         child1.iconphoto(False, add_icon_image)
 
         Label(child1, background=backGroundColorforchild1).pack()
@@ -403,7 +402,7 @@ def item_page():
                     messagebox.showwarning("WARNING", "THIS PRODUCT IS ALL READY EXISTS IN MAIN WINDOW")
                     return
 
-            obj_3 = database.TEMP("databases/temp.db")
+            obj_3 = database.TEMP("databases\\temp.db")
             row2 = obj_3.return_everything()
 
             pos = 0
@@ -422,7 +421,7 @@ def item_page():
 
             id_value = data[-1]
 
-            obj2 = database.TEMP("databases/temp.db")
+            obj2 = database.TEMP("databases\\temp.db")
 
             # this function remove value at the end of the list
             data.pop()
@@ -476,8 +475,8 @@ def item_page():
     # If non of these condition get satisfied and moves to else
     # part then it get values from database files and stores
     # in a "row" variable
-    obj = database.DataBase1("databases/Database.db")
-    obj2 = database.TEMP("databases/temp.db")
+    obj = database.DataBase1("databases\\Database.db")
+    obj2 = database.TEMP("databases\\temp.db")
     if productEntry.get() == "":
         if codeEntry.get() == "" or codeEntry.get() == "0":
             return messagebox.showwarning("WARNING", "PLEACE INSERT THE KEYWORD")
@@ -535,7 +534,7 @@ def item_page():
         child3.title("Add to cart")
         child3.geometry("800x400+200+80")
         child3.resizable(False, False)
-        shoppingcartImage = PhotoImage(file="images/trolly_image.png")
+        shoppingcartImage = PhotoImage(file="images\\trolly_image.png")
         child3.iconphoto(False, shoppingcartImage)
 
         frame_style = Style()
@@ -581,7 +580,7 @@ def item_page():
         treeview1.bind("<ButtonRelease-1>", add_items)
         treeview1.pack(fill="x")
 
-        add_icon = PhotoImage(file="images/add_icon.png")
+        add_icon = PhotoImage(file="images\\add_icon.png")
         Button(child3, text="Add", image=add_icon, compound="left", command=move_to_main).place(anchor=W, relx=0.85,
                                                                                                 rely=0.800)
 
@@ -632,8 +631,8 @@ def report(event=None):
         months = {1:"Jan", 2:"Feb", 3:"Mar", 4:"Apr", 5:"May", 6:"Jun", 7:"Jul", 8:"Aug", 9:"Sep", 10:"Oct", 11:"Nov", 12:"Dec"}
         date = time.localtime()
 
-        obj1 = database.purchased("databases/purchased.db", months[date[1]])
-        obj2 = database.Total("databases/total.db")
+        obj1 = database.purchased("databases\\purchased.db", months[date[1]])
+        obj2 = database.Total("databases\\total.db")
 
         total = obj2.return_value()
         ftm = obj1.return_value(months[date[1]])
@@ -661,7 +660,7 @@ def report(event=None):
         child5.resizable(False, False)
         child5.geometry("400x350+400+150")
         child5.configure(background="#d6d0d0")
-        icon = PhotoImage(file="images/report.png")
+        icon = PhotoImage(file="images\\report.png")
         child5.iconphoto(False, icon)
 
         styler = Style()
@@ -760,7 +759,7 @@ def maintain_stock(event=None):
         if row == "":
             return messagebox.showwarning("WARNING", "PlEASE SELECT A ROW")
 
-        obj = database.DataBase1("databases/Database.db")
+        obj = database.DataBase1("databases\\Database.db")
         ver = obj.update_2(c_no.get(), p_name.get(), p_short_name.get(), quan.get(), price.get(), size.get(), id.get())
 
         messagebox.showinfo("SUCCESS", "DATAS ARE SUCCESSFULLY UPDATED")
@@ -768,7 +767,7 @@ def maintain_stock(event=None):
         global word
         global key
 
-        obj = database.DataBase1("databases/Database.db")
+        obj = database.DataBase1("databases\\Database.db")
         if key == "code no":
             row = obj.return_specific("Code_No", word)
         elif key == "pro name":
@@ -798,7 +797,7 @@ def maintain_stock(event=None):
         if row == "":
             return messagebox.showwarning("WARNING", "PlEASE SELECT A ROW")
 
-        obj_temp = database.TEMP("databases/temp.db")
+        obj_temp = database.TEMP("databases\\temp.db")
         value = obj_temp.return_everything()
         for_del = row
         row  = treeview3.item(row, "values")
@@ -820,7 +819,7 @@ def maintain_stock(event=None):
 
                     priceEntry.set(price)
 
-        obj = database.DataBase1("databases/Database.db")    
+        obj = database.DataBase1("databases\\Database.db")    
         ver = obj.delete_by_id(id.get())
         if ver:
             messagebox.showinfo("SUCCESS", "DATAS ARE SUCCESSFULLY DELETED")
@@ -828,7 +827,7 @@ def maintain_stock(event=None):
         global word
         global key
 
-        obj = database.DataBase1("databases/Database.db")
+        obj = database.DataBase1("databases\\Database.db")
         if key == "code no":
             row = obj.return_specific("Code_No", word)
         elif key == "pro name":
@@ -957,7 +956,7 @@ def checkout():
         if not yes_or_no:
             return
 
-        obj = database.DataBase1("databases/Database.db")
+        obj = database.DataBase1("databases\\Database.db")
 
         # getting values from main treeview
         data = []
@@ -1014,7 +1013,7 @@ def checkout():
             print(total_var.get())
             obj_report.update(months[date[1]], int(total_var.get()) + int(value[0][0]))
 
-        obj_report_2 = database.Total("databases/total.db")
+        obj_report_2 = database.Total("databases\\total.db")
 
         if obj_report_2.check_state() == False:
             obj_report_2.insert(total_var.get(), total_products)
@@ -1025,7 +1024,7 @@ def checkout():
 
             obj_report_2.update(total_earnings, total_selled_products)
 
-        obj_return = database.Return_products("databases/return.db")
+        obj_return = database.Return_products("databases\\return.db")
         
         for value in return_row:
             obj_return.insert(value[0], value[1], value[2], value[3], value[-1], Bill_no.get())
@@ -1039,14 +1038,14 @@ def checkout():
             time.sleep(2)
             messagebox.showinfo("SUCCESS", "BILLED SUCCESSFULLY")
             time.sleep(2)
-            obj_3 = database.TEMP("databases/temp.db")
+            obj_3 = database.TEMP("databases\\temp.db")
             obj_3.remove_everything()
             remove_everything()
             change_state(5, child8)
         else:
             messagebox.showinfo("SUCCESS", "BILLED SUCCESSFULLY")
-            obj_3 = database.TEMP("databases/temp.db")
-            obj = database.Bill_no("databases/Bill_no.db")
+            obj_3 = database.TEMP("databases\\temp.db")
+            obj = database.Bill_no("databases\\Bill_no.db")
             bill_no = obj.return_no()
             var = bill_no[0][0]; var+=1
             obj.update(var)
@@ -1058,7 +1057,7 @@ def checkout():
     # to indentify each and every bill with 
     # the number 
     def bill_no_creation():
-        obj = database.Bill_no("databases\BIll_no.db")
+        obj = database.Bill_no("databases/BIll_no.db")
         row = obj.return_no()
         if row == []:
             obj.insert("100000")
@@ -1176,7 +1175,7 @@ def checkout():
         Entry(child8, textvariable=total_var, state="readonly", justify="right").place(anchor="w", rely=0.950,
                                                                                        relx=0.79)
 
-        af_arrow_image = PhotoImage(file="images/af_arrow_image.png")
+        af_arrow_image = PhotoImage(file="images\\af_arrow_image.png")
         Button(child8, image=af_arrow_image, command=billed).place(anchor="w", rely=0.03, relx=0.95)
 
         child8.protocol("WM_DELETE_WINDOW", lambda: change_state(5, child8))
@@ -1187,7 +1186,7 @@ def checkout():
 # for temproraly and get deleted or update using 
 # delete_momory and return_from_memory function 
 def load_to_memory(event=None):
-    obj = database.load_to_memory("databases/memory.db")
+    obj = database.load_to_memory("databases\\memory.db")
     if len(treeview.get_children()) == 0: 
         return messagebox.showinfo("INFO", "MAIN WINDOW IS EMPTY")
     elif obj.check_state():
@@ -1204,7 +1203,7 @@ def load_to_memory(event=None):
 
     messagebox.showinfo("SUCCESS", "DATA'S STORED IN MEMORY SUCCESSFULLY")
 
-    obj2 = database.TEMP("databases/temp.db")
+    obj2 = database.TEMP("databases\\temp.db")
     obj2.remove_everything()
     #for item in treeview.get_children():
     #   treeview.delete(item)
@@ -1213,7 +1212,7 @@ def load_to_memory(event=None):
 
 # this function remove everything from temp database
 def delete_memory(event=None):
-    obj = database.load_to_memory("databases/memory.db")
+    obj = database.load_to_memory("databases\\memory.db")
     if obj.check_state():
         ok_cancel = messagebox.askokcancel("WARNING", "THIS DELETE EVERYTHING FROM MEMORY ? ") 
         if ok_cancel:
@@ -1228,9 +1227,9 @@ def delete_memory(event=None):
 # this funciton get back all the data which stores in temp
 # database 
 def return_from_memory(event=None):
-    obj = database.load_to_memory("databases/memory.db")
-    obj2 = database.DataBase1("databases/Database.db")
-    obj3 = database.TEMP("databases/temp.db")   
+    obj = database.load_to_memory("databases\\memory.db")
+    obj2 = database.DataBase1("databases\\Database.db")
+    obj3 = database.TEMP("databases\\temp.db")   
 
     if obj.check_state() == False:
         return messagebox.showinfo("INFO", "MEMORY IS EMPTY")    
@@ -1301,12 +1300,12 @@ def return_stock(event=None):
             if int(row[2]) < int(return_quan.get()):
                 return messagebox.showwarning("WARNING", "ENTERED QUANTITY IS TOO MUCH THAN AVAILABLE QUANTITY")
             else:
-                obj = database.Return_products("databases/return.db")
+                obj = database.Return_products("databases\\return.db")
                 print(row, return_quan.get())
 
                 reduced_amound = int(row[2]) - int(return_quan.get())
 
-                obj2 = database.DataBase1("databases\Database.db")
+                obj2 = database.DataBase1("databases\\Database.db")
                 value = obj2.return_for_bill(row[-2])
                 print(value)
                 
@@ -1316,7 +1315,7 @@ def return_stock(event=None):
                 obj.update(reduced_amound, pri_id = int(row[-1]))
 
 
-            obj = database.Return_products("databases/return.db")
+            obj = database.Return_products("databases\\return.db")
 
             row = obj.return_value(int(bill_no.get()))
         
@@ -1362,7 +1361,7 @@ def return_stock(event=None):
         if bill_no.get() == "":
             return messagebox.showwarning("WARNING", "BILL NUMBER IS EMPTY") 
         
-        obj = database.Return_products("databases/return.db")
+        obj = database.Return_products("databases\\return.db")
         row = obj.return_value(int(bill_no.get()))
         
         treeview4.delete(*treeview4.get_children())
@@ -1396,7 +1395,7 @@ def return_stock(event=None):
         Label(top_frame, text="BILL NO", style="N.TLabel").place(anchor="w", rely=0.65, relx=0.15)
         bill_no = StringVar()
         Entry(top_frame, textvariable=bill_no, justify="right").place(anchor="w", rely=0.65, relx=0.30)
-        search_image = PhotoImage(file="images\search_image.png")
+        search_image = PhotoImage(file="images\\search_image.png")
         Button(top_frame, text="Search", image=search_image, compound="left", command=search_id).place(anchor="w", rely=0.65, relx=0.65)
 
         body_frame = Frame(child10, style="B.TFrame", height=480)
@@ -1444,6 +1443,16 @@ def return_stock(event=None):
 
 #def unknow_item(self):
     
+def search_menu(event=None):
+    
+    if search_window == 1:
+        search_window = 0
+        child8 = Toplevel(root)
+        child8.title("Search")
+        child8.geometry("400x600+450+100")
+        child8.resizable(False, False)
+        child8.protocol("WM_DELETE_WINDOW", lambda : change_state(2, child8))
+        child8.wm_transient(root)
 
 if __name__ == '__main__':
     #login()
@@ -1456,6 +1465,7 @@ if __name__ == '__main__':
     global verify
     global help_window
     global edit_window
+    global search_window
     global report_window
     global checkout_window
     global add_stocK_window
@@ -1472,7 +1482,7 @@ if __name__ == '__main__':
     return_stock_window = 1
 
     # remove everything from temprorary 
-    obj_remove = database.TEMP("databases/temp.db")
+    obj_remove = database.TEMP("databases\\temp.db")
     obj_remove.remove_everything()
 
     # building main window and decorating with attributes that require to build application
@@ -1482,7 +1492,7 @@ if __name__ == '__main__':
     root.resizable(True, True)
     backGroundColor = "#b4e0dd"
     root.config(background=backGroundColor)
-    titleImage = PhotoImage(file="images/title_icon.png")
+    titleImage = PhotoImage(file="images\\title_icon.png")
     root.iconphoto(False, titleImage)
 
     # storing screen height and width to variables
@@ -1490,7 +1500,7 @@ if __name__ == '__main__':
     screen_height = root.winfo_screenheight()
 
     # adding menus namely help and exit
-    menubar = Menu(root)
+    menubar = Menu(root, activebackground="orange")
 
     # file menu
     file = Menu(menubar, tearoff=0, relief=RIDGE, activebackground="orange")
@@ -1498,6 +1508,8 @@ if __name__ == '__main__':
     edit = Menu(menubar, tearoff=0, relief=RIDGE, activebackground="orange")
     # inventory menu
     inventory = Menu(menubar, tearoff=0, relief=RIDGE, activebackground="orange")
+    #search menu
+    search = Menu(menubar, tearoff=0, relief=RIDGE,activebackground="orange")
     # help menu
     help = Menu(menubar, tearoff=0, relief=RIDGE, activebackground="orange")
     # memory menu
@@ -1506,6 +1518,7 @@ if __name__ == '__main__':
     menubar.add_cascade(label="File", menu=file)
     # menubar.add_cascade(label="Edit", menu=edit, command=edit)
     menubar.add_cascade(label="Inventory", menu=inventory)
+    menubar.add_cascade(label="Search", menu=search)
     menubar.add_cascade(label="Memory", menu=memory)
     menubar.add_cascade(label="Help", menu=help)
 
@@ -1531,9 +1544,11 @@ if __name__ == '__main__':
     inventory.add_command(label="Return Item             Ctrl+I", command=return_stock)
     #inventory.add_command(label="Unknow Item             Ctrl+U", command=unknown)
 
-    memory.add_command(label="Load to Memory                    <Shift><L>", command=load_to_memory)
-    memory.add_command(label="Return from Memory           <Shift><R>", command=return_from_memory)
-    memory.add_command(label="Delete Memory                     <Shift><D> ", command=delete_memory)
+    search.add_command(label="Search Record             ", command=search_menu)
+
+    memory.add_command(label="Load to Memory                    Shift+L", command=load_to_memory)
+    memory.add_command(label="Return from Memory            Shift+R", command=return_from_memory)
+    memory.add_command(label="Delete Memory                      Shift+D", command=delete_memory)
 
     headFrame = Frame(root)
     headFrame.pack()
