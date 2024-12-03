@@ -7,12 +7,18 @@ from tkinter import PhotoImage, messagebox
 
 class Settings:
     state = 1
-    def __init__(self, mainWindow):
+    def __init__(self, mainWindow=1):
         if Settings.state == 1:
             Settings.state = 0
 
-            self.Set_win = tk.Toplevel(mainWindow)
+            """ self.Set_win = tk.Toplevel(mainWindow)
             self.Set_win.wm_transient(mainWindow)
+            self.Set_win.resizable(0, 0)
+            self.Set_win.title("Settings")
+            self.Set_win.geometry("800x600+225+70")
+ """
+            
+            self.Set_win = tk.Tk()
             self.Set_win.resizable(0, 0)
             self.Set_win.title("Settings")
             self.Set_win.geometry("800x600+225+70")
@@ -98,10 +104,11 @@ class Settings:
         defaultFont.set(self.fontstyle)
 
         ttk.Label(self.right_frame,text="Font", style="H.TLabel", justify="center").place(relx=0.10, rely=0.10, anchor="w")
-        ttk.Combobox(self.right_frame, textvariable=defaultFont, values=FONT, state="readonly").place(relx=0.20, rely=0.10, anchor="w")
+        ttk.Combobox(self.right_frame, textvariable=defaultFont, values=FONT, state="normal").place(relx=0.20, rely=0.10, anchor="w")
 
-        backgroundTheme = tk.IntVar()
+        backgroundTheme = tk.StringVar()
         backgroundTheme.set(self.theme)
+        
         ttk.Label(self.right_frame, text="Background", style="H.TLabel").place(relx=0.05, rely=0.20, anchor="w")
         ttk.Radiobutton(self.right_frame, variable=backgroundTheme, value="light").place(relx=0.22, rely=0.20, anchor="w")
         ttk.Label(self.right_frame, text="light", style="S.TLabel").place(relx=0.25, rely=0.20, anchor="w")
@@ -173,5 +180,4 @@ class Settings:
     def close_window(self):
         Settings.state = 1
         self.Set_win.destroy()
-
 

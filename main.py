@@ -4,12 +4,11 @@ try:
     import time
     import database
     import file_writer
+    import configparser
     from tkinter import *
     from tkinter.ttk import *
     from settings import Settings
     from tkinter import messagebox
-    from tkinter import colorchooser
-    
 except ModuleNotFoundError:
     import os
     import sys
@@ -112,8 +111,8 @@ def edit_menu(event):
             child9.iconphoto(False, icon)
 
             styler = Style()
-            styler.configure("H.TLabel", font=("Roboto", 10, "bold"), background="#edeacc")
-            styler.configure("N.TLabel", font=("Roboto", 10), background='#edeacc')
+            styler.configure("H.TLabel", font=(fontstyle, 10, "bold"), background="#edeacc")
+            styler.configure("N.TLabel", font=(fontstyle, 10), background='#edeacc')
 
             Label(child9, text="EDIT PAGE", style="H.TLabel").pack()
 
@@ -234,10 +233,10 @@ def help_menu(event=None):
         img = PhotoImage(file="images/information.png")
         child2.iconphoto(False, img)
 
-        Label(child2, text="This app is designed for educational purpose \n\t in 2022 by sptc students", font=("Roboto", 10),
+        Label(child2, text="This app is designed for educational purpose \n\t in 2022 by sptc students", font=(fontstyle, 10),
               background="#52a358").place(anchor=W, relx=0.10, rely=0.20)
         style2 = Style()
-        style2.configure("H.TButton", font="Roboto", foreground="orange", activeforeground="orange",
+        style2.configure("H.TButton", font=fontstyle, foreground="orange", activeforeground="orange",
                          bordeercolor="orange",
                          relief=RAISED)
         Button(child2, text="Exit", style="H.TButton", command=lambda: change_state(1, child2)).place(anchor=W,
@@ -345,12 +344,12 @@ def add_stock(event=None):
         child1.iconphoto(False, add_icon_image)
 
         Label(child1, background=backGroundColorforchild1).pack()
-        Label(child1, text="Add Stock", font=("Roboto", 13, "bold"), background=backGroundColorforchild1).pack()
+        Label(child1, text="Add Stock", font=(fontstyle, 13, "bold"), background=backGroundColorforchild1).pack()
 
         style3 = Style()
-        style3.configure("ADD.TLabel", font=("Roboto", 10), background=backGroundColorforchild1)
-        style3.configure("TEntry", font="Roboto", heigh=15)
-        style3.configure("A.TButton", font=("Roboto", 10), foreground="green")
+        style3.configure("ADD.TLabel", font=(fontstyle, 10), background=backGroundColorforchild1)
+        style3.configure("TEntry", font=fontstyle, heigh=15)
+        style3.configure("A.TButton", font=(fontstyle, 10), foreground="green")
 
         Label(child1, text="Enter the code ", style="ADD.TLabel", justify=LEFT).place(anchor=W, rely=0.15, relx=0.07)
         Entry(child1, textvariable=code_no, style="TEntry", width=45).place(anchor=W, rely=0.15, relx=0.30)
@@ -668,8 +667,8 @@ def report(event=None):
         child5.iconphoto(False, icon)
 
         styler = Style()
-        styler.configure("H.TLabel", font=("Roboto", 10, "bold"), background="#d6d0d0")
-        styler.configure("N.TLabel", font=("Roboto", 10), background="#d6d0d0")
+        styler.configure("H.TLabel", font=(fontstyle, 10, "bold"), background="#d6d0d0")
+        styler.configure("N.TLabel", font=(fontstyle, 10), background="#d6d0d0")
 
         Label(child5, text="Report", style="H.TLabel").pack()
 
@@ -865,9 +864,9 @@ def maintain_stock(event=None):
     styler = Style()
     styler.configure("H.TFrame", background="#dfe8df")
     styler.configure("B.TFrame", background="#dfe8df")
-    styler.configure("H.TLabel", background="#dfe8df", font=("Roboto", 13, "bold"))
-    styler.configure("N.TLabel", background="#dfe8df", font=("Roboto", 10))
-    styler.configure("N.TEntry", font=("Roboto", 10), border=10)
+    styler.configure("H.TLabel", background="#dfe8df", font=(fontstyle, 13, "bold"))
+    styler.configure("N.TLabel", background="#dfe8df", font=(fontstyle, 10))
+    styler.configure("N.TEntry", font=(fontstyle, 10), border=10)
     styler.configure("TV.TEntry")
     
 
@@ -925,8 +924,8 @@ def maintain_stock(event=None):
     scrollbar.pack(side=RIGHT, fill=Y)
 
     tvstyle = Style()
-    tvstyle.configure("mystyle.Treeview", font=("Roboto", 10))
-    tvstyle.configure("mystyle.Treeview.Heading", font=("Roboto", 10, "bold"), justify="center")
+    tvstyle.configure("mystyle.Treeview", font=(fontstyle, 10))
+    tvstyle.configure("mystyle.Treeview.Heading", font=(fontstyle, 10, "bold"), justify="center")
 
     treeview3 = Treeview(tv3frame, style="mystyle.Treeview", column=["1", "2", "3", "4", "5", "6"],
                         yscrollcommand=scrollbar.set, height=22)
@@ -1111,16 +1110,16 @@ def checkout():
         child8.geometry("700x600+300+100")
 
         labelStyle = Style()
-        labelStyle.configure("H.TLabel", font=("Roboto", 12, "bold"), background="#ebebeb")
-        labelStyle.configure("N.TLabel", font=("Roboto", 10), background="#ebebeb")
+        labelStyle.configure("H.TLabel", font=(fontstyle, 12, "bold"), background="#ebebeb")
+        labelStyle.configure("N.TLabel", font=(fontstyle, 10), background="#ebebeb")
 
         frameStyle = Style()
         frameStyle.configure("TOP.TFrame", background="#ebebeb")
         frameStyle.configure("MID.TFrame", background="orange")
 
         tv2style = Style()
-        tv2style.configure("MYstyle.Treeview", font=("Roboto", 10))
-        tv2style.configure("MYstyle.Treeview.Heading", font=("Roboto", 10, "bold"), justify="center")
+        tv2style.configure("MYstyle.Treeview", font=(fontstyle, 10))
+        tv2style.configure("MYstyle.Treeview.Heading", font=(fontstyle, 10, "bold"), justify="center")
 
         TOP_frame = Frame(child8, heigh=100, style="TOP.TFrame")
         TOP_frame.pack(fill=X)
@@ -1385,8 +1384,8 @@ def return_stock(event=None):
         child10.resizable(False, False)
 
         styler = Style()
-        styler.configure("N.TLabel", font=("Roboto", 10), background="#fadcf9")
-        styler.configure("H.TLabel", font=("Roboto", 10, "bold"), background="#fadcf9")
+        styler.configure("N.TLabel", font=(fontstyle, 10), background="#fadcf9")
+        styler.configure("H.TLabel", font=(fontstyle, 10, "bold"), background="#fadcf9")
         styler.configure("T.TFrame", background="#fadcf9")
         styler.configure("B.TFrame", background="yellow")
         styler.configure("L.TFrame", background="#fadcf9")
@@ -1424,8 +1423,8 @@ def return_stock(event=None):
         
         tvStyle = Style()
         
-        tvStyle.configure("mystyle.Treeview", font=("Roboto", 10))
-        tvStyle.configure("mystyle.Treeview.Heading", font=("Roboto", 10, "bold"), justify="center")
+        tvStyle.configure("mystyle.Treeview", font=(fontstyle, 10))
+        tvStyle.configure("mystyle.Treeview.Heading", font=(fontstyle, 10, "bold"), justify="center")
         
         treeview4 = Treeview(body_frame, columns=["1", "2", "3", "4"], yscrollcommand=scrollbar.set, height=23)
 
@@ -1454,15 +1453,47 @@ def search_menu(event=None):
         search_window = 0
         child11 = Toplevel(root)
         child11.title("Search")
-        child11.geometry("400x600+450+100")
+        child11.geometry("600x600+400+50")
         child11.resizable(False, False)
+
 
 
         child11.protocol("WM_DELETE_WINDOW", lambda : change_state(11, child11))
         child11.wm_transient(root)
         child11.mainloop()
 
+
+def appearance(event=None):
+    pass
+
+
+def change_font(new_font):
+    config = configparser.ConfigParser()
+    config.read("files/configuration.ini")
+    config.set("SectionTwo","font",new_font)
+
+    with open('files/configuration.ini', 'w') as configfile:
+                config.write(configfile)
+
+    global fontstyle
+    fontstyle = new_font
+    root.update_idletasks()
+
+    messagebox.showinfo("INFO","RESTART THE PROGRAM TO SEE THE CHANGES")
+   
+
 if __name__ == '__main__':
+    #loading the needed meta for program
+    global config
+    config = configparser.ConfigParser()
+    config.read("files/configuration.ini")
+    global theme
+    theme = config.get("SectionOne","theme")
+    global fontstyle
+    fontstyle = config.get("SectionTwo","font")
+        
+    
+
     #login()
     # '''
     global arow
@@ -1541,10 +1572,23 @@ if __name__ == '__main__':
     file.add_separator()
     file.add_command(label="Edit                             Ctrl+E", command=lambda: edit_menu(None))
     file.add_separator()
-    settings_image = PhotoImage(file="")
-    file.add_command(label="Settings                      Ctrl+S", command=lambda : Settings(root))
+    
+
+    """ file.add_command(label="Fonts", command=appearance) """
+    #creating sub menu for font menu
+    fontMenu = Menu(file,tearoff=0, relief=RIDGE, activebackground="orange")
+    file.add_cascade(label="Fonts", menu=fontMenu)
+    fontMenu.add_command(label="Roboto", command=lambda: change_font("Roboto"))
+    fontMenu.add_command(label="Times New Roman", command=lambda: change_font("Times New Roman"))
+    fontMenu.add_command(label="Sego UI", command=lambda: change_font("Segoe UI"))
+    fontMenu.add_command(label="Calibri", command=lambda: change_font("Calibri"))
+
+    file.add_command(label="Theme", command=appearance)
+    
     file.add_separator()
     file.add_command(label="Exit                             Alt+F4", command=close_window)
+
+    
 
     # edit.add_command(label="Edit", command=edit)
 
@@ -1570,11 +1614,11 @@ if __name__ == '__main__':
     labelStyle = Style()
     entryStyle = Style()
     comboStyle = Style()
-    labelStyle.configure("TLabel", background=backGroundColor, font=("Roboto", 10))
-    entryStyle.configure("TEntry", font=("Roboto", 10), border=4)
-    comboStyle.configure("TCombobox", font=("Roboto", 10))
+    labelStyle.configure("TLabel", background=backGroundColor, font=(fontstyle, 10))
+    entryStyle.configure("TEntry", font=(fontstyle, 10), border=4)
+    comboStyle.configure("TCombobox", font=(fontstyle, 10))
 
-    headLabel = Label(headFrame, text="Billing Page", font=("Roboto", 12, "bold"), background=backGroundColor)
+    headLabel = Label(headFrame, text="Billing Page", font=(fontstyle, 12, "bold"), background=backGroundColor)
 
     style = Style()
     style.configure("S.TFrame", background=backGroundColor)
@@ -1597,8 +1641,8 @@ if __name__ == '__main__':
 
     tvStyle = Style()
     tvStyle.configure("TV.TFrame", background="white")
-    tvStyle.configure("mystyle.Treeview", font=("Roboto", 10))
-    tvStyle.configure("mystyle.Treeview.Heading", font=("Roboto", 10, "bold"), justify="center")
+    tvStyle.configure("mystyle.Treeview", font=(fontstyle, 10))
+    tvStyle.configure("mystyle.Treeview.Heading", font=(fontstyle, 10, "bold"), justify="center")
     tvFrame = Frame(root, style="TV.TFrame", height=490)
     tvFrame.pack(fill=X)
 
@@ -1629,15 +1673,15 @@ if __name__ == '__main__':
     footFrame.pack(fill="both")
 
     netamountStyle = Style()
-    netamountStyle.configure("NET.TLabel", font=("Roboto", 20))
+    netamountStyle.configure("NET.TLabel", font=(fontstyle, 20))
     netamountLabel = Label(footFrame, text="Net Amount : ", style="NET.TLabel")
     priceEntry = StringVar()
     priceEntry.set("0")
-    Entry(footFrame, font=("Roboto", 10, "bold"), state="readonly", textvariable=priceEntry,
+    Entry(footFrame, font=(fontstyle, 10, "bold"), state="readonly", textvariable=priceEntry,
           justify="right").place(anchor=W, relx=0.60, rely=0.50)
 
     payamountButtonStyle = Style()
-    payamountButtonStyle.configure("PA.TButton", font=("Roboto", 12), activebackground="orange")
+    payamountButtonStyle.configure("PA.TButton", font=(fontstyle, 12), activebackground="orange")
     cash_image = PhotoImage(file="images/cash_image_2.png")
     payamountButton = Button(footFrame, text="  Checkout", style="PA.TButton", image=cash_image, compound="left",
                              command=checkout)
