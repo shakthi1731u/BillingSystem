@@ -8,6 +8,7 @@ try:
     from tkinter import *
     from tkinter.ttk import *
     from customtkinter import *
+    from tkinter import font
     from settings import Settings
     from tkinter import messagebox
 except ModuleNotFoundError:
@@ -19,19 +20,23 @@ except ModuleNotFoundError:
     
 
 
-# this function used to control behavior of x button in CTkToplevel function
+# This function used to control behavior of x button in CTkToplevel function
 def change_state(data, window):
     if data == 3:
         global arow
         arow = 1
         window.destroy()
     elif data == 2:
-        global add_stocK_window
-        add_stocK_window = 1
+        global add_stock_window
+        add_stock_window = 1
         window.destroy()
     elif data == 1:
         global help_window
         help_window = 1
+        window.destroy()
+    elif data == 4:
+        global mwindow
+        mwindow = 1
         window.destroy()
     elif data == 5:
         global checkout_window
@@ -53,6 +58,26 @@ def change_state(data, window):
         global search_window
         search_window = 1
         window.destroy()
+
+
+# This function used to not let the other windows to be opened when one window is 
+# in the active state(opened)
+def isOpened(event=None):
+    global mwindow
+    global help_window
+    global edit_window
+    global search_window
+    global report_window
+    global checkout_window
+    global add_stock_window
+    global return_stock_window
+
+    if(help_window==0 or edit_window==0 or search_window==0 or report_window==0 or checkout_window==0 or 
+       add_stock_window==0 or return_stock_window==0 or mwindow==0):
+        print("Yep")
+        return True
+    else:
+        return False
 
 
 # This menu is invoked when a item is 
@@ -225,19 +250,17 @@ def help_menu(event=None):
         child2 = CTkToplevel(root)
         child2.title("Help Menu")
         child2.resizable(False, False)
-        child2.config(background="#52a358")
         child2.geometry("350x200+450+200")
 
         img = PhotoImage(file="images/information.png")
         child2.iconphoto(False, img)
 
-        CTkLabel(child2, text="This app is designed for educational purpose \n\t in 2022 by sptc students", font=(fontstyle, 10),
-              background="#52a358").place(anchor=W, relx=0.10, rely=0.20)
+        CTkLabel(child2, text="This app is designed for educational purpose \n\t in 2022 by sptc students", font=(fontstyle, 13),
+              ).place(anchor=W, relx=0.10, rely=0.20)
     
-        CTkButton(child2, text="Exit", command=lambda: change_state(1, child2)).place(anchor=W,
+        CTkButton(child2, text="Exit", command=lambda: change_state(1, child2), font=(fontstyle, 13)).place(anchor=W,
                                                                                                       relx=0.35,
                                                                                                       rely=0.50)
-
         child2.wm_transient(root)
         child2.protocol("WM_DELETE_WINDOW", lambda: change_state(1, child2))
         child2.mainloop()
@@ -280,10 +303,13 @@ def close_window(event=None):
         return
 
 
-
 # present inside file menu
 # for adding stocks
 def add_stock(event=None):
+    #checking any other child window is in open state
+    if(isOpened):
+        return
+
     # this function responsible for validation and insertion of data
     # into database
     def insert():
@@ -309,15 +335,14 @@ def add_stock(event=None):
 
             return
 
-
-    global add_stocK_window
+    global add_stock_window
     global arow
 
     if arow > 1:
-        return messagebox.showwarning("WARNING", "PLEASE ADD TO CARD WINDOW")
+        return messagebox.showwarning("WARNING", "PLEASE ADD TO CART WINDOW")
 
-    if add_stocK_window < 2:
-        add_stocK_window += 1
+    if add_stock_window < 2:
+        add_stock_window += 1
 
         child1 = CTkToplevel(root)
         child1.title("Add Stock")
@@ -529,9 +554,7 @@ def item_page():
         shoppingcartImage = PhotoImage(file="images/trolly_image.png")
         child3.iconphoto(False, shoppingcartImage)
 
-        frame_style = Style()
-        frame_style.configure("AS.TFrame")
-        top_frame = Frame(child3, height=50, style="AS.TFrame")
+        top_frame = CTkFrame(child3, height=50)
         top_frame.pack(fill="x")
 
         labelstyle = Style()
@@ -674,17 +697,17 @@ def report(event=None):
 
         CTkLabel(child5, text=string).place(anchor="w", rely=0.30, relx=0.05)
         for_this_month = StringVar()
-        CTkEntry(child5, text=for_this_month, state="readonly", justify="center").place(anchor="w", rely=0.30, relx=0.36)
+        CTkEntry(child5, textvariable=for_this_month, state="readonly", justify="center").place(anchor="w", rely=0.30, relx=0.36)
 
         CTkLabel(child5, text="Total products selled").place(anchor="w", rely=0.45, relx=0.05)
         tps = StringVar()
-        CTkEntry(child5, text=tps, state="readonly", justify="center").place(anchor="w", rely=0.45, relx=0.36)
+        CTkEntry(child5, textvariable=tps, state="readonly", justify="center").place(anchor="w", rely=0.45, relx=0.36)
 
         #CTkLabel(child5, text="Best Selling product").place(anchor="w", rely=0.60, relx=0.05)
         #bsp = StringVar()
         #Entry(child5, text=bsp, state="readonly", justify="center").place(anchor="w", rely=0.60, relx=0.36)
 
-        CTkLabel(child5, text="NOTE --> (THIS WINDOW IS UNDER DEVELOPMENT SO \nWE CAN'T ADD MORE FEATURES TO IT RIGHT. NOW \nMAY BE IN FUTURE WE WILL UPDATE THIS WINDOW IN \nSPTC-2022/GITHUB PAGE)", style="N.TLabel").place(anchor="w", relx=0.05, rely=0.75)
+        CTkLabel(child5, text="NOTE --> (THIS WINDOW IS UNDER DEVELOPMENT SO \nWE CAN'T ADD MORE FEATURES TO IT RIGHT. NOW \nMAY BE IN FUTURE WE WILL UPDATE THIS WINDOW IN \nSPTC-2022/GITHUB PAGE)").place(anchor="w", relx=0.05, rely=0.75)
 
         set_data()
 
@@ -844,91 +867,97 @@ def maintain_stock(event=None):
             size.set("")
             id.set("")
             return    
-                 
 
-    child6 = CTkToplevel(root)  # creating Tk object
-    child6.wm_transient(root)  # This is used to make child6 as main window when it is activated or invoked
-    child6.title("Maintain Stock")  # This function is used to add title to this child6 window
-    child6.resizable(False, False)  # This function set false on height width resize
-    child6.geometry("1100x650+100+45")  # This is used to set the screen height and width   
+    if(isOpened):
+        return         
 
-    id = StringVar()
+    global mwindow
+    if mwindow==1:
+        mwindow=0
+        child6 = CTkToplevel(root)  # creating Tk object
+        child6.wm_transient(root)  # This is used to make child6 as main window when it is activated or invoked
+        child6.title("Maintain Stock")  # This function is used to add title to this child6 window
+        child6.resizable(False, False)  # This function set false on height width resize
+        child6.geometry("1100x650+100+45")  # This is used to set the screen height and width   
 
-    top_frame = CTkFrame(child6, height=100)
-    top_frame.pack(fill="x")
+        id = StringVar()
 
-    body_frame = CTkFrame(child6, height=150)
-    body_frame.pack(fill="x")
+        top_frame = CTkFrame(child6, height=100)
+        top_frame.pack(fill="x")
 
-    CTkLabel(top_frame, text="MAINTAIN STOCK", font=(fontstyle, 13, "bold")).pack()
+        body_frame = CTkFrame(child6, height=150)
+        body_frame.pack(fill="x")
 
-    CTkLabel(body_frame, text="Code No", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.03)
-    c_no = StringVar()
-    CTkEntry(body_frame, textvariable=c_no, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.08)
+        CTkLabel(top_frame, text="MAINTAIN STOCK", font=(fontstyle, 13, "bold")).pack()
 
-    CTkLabel(body_frame, text="Product Name", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.22)
-    p_name = StringVar()
-    CTkEntry(body_frame, textvariable=p_name, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.30)
+        CTkLabel(body_frame, text="Code No", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.03)
+        c_no = StringVar()
+        CTkEntry(body_frame, textvariable=c_no, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.08)
 
-    CTkLabel(body_frame, text="Product Short Name", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.44)
-    p_short_name = StringVar()
-    CTkEntry(body_frame, textvariable=p_short_name, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.56)
+        CTkLabel(body_frame, text="Product Name", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.22)
+        p_name = StringVar()
+        CTkEntry(body_frame, textvariable=p_name, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.30)
 
-    CTkLabel(body_frame, text="Quantity", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.71)
-    quan = StringVar()
-    CTkEntry(body_frame, textvariable=quan, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.76)
+        CTkLabel(body_frame, text="Product Short Name", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.44)
+        p_short_name = StringVar()
+        CTkEntry(body_frame, textvariable=p_short_name, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.56)
 
-    CTkLabel(body_frame, text="Price", font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.30)
-    price = StringVar()
-    CTkEntry(body_frame, textvariable=price, font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.34)
+        CTkLabel(body_frame, text="Quantity", font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.71)
+        quan = StringVar()
+        CTkEntry(body_frame, textvariable=quan, font=(fontstyle, 13)).place(anchor="w", rely=0.23, relx=0.76)
 
-    CTkLabel(body_frame, text="Size", font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.48)
-    size = StringVar()
-    CTkEntry(body_frame, textvariable=size, font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.52)
+        CTkLabel(body_frame, text="Price", font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.30)
+        price = StringVar()
+        CTkEntry(body_frame, textvariable=price, font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.34)
 
-    CTkLabel(body_frame, text="Keyword", font=(fontstyle, 13)).place(anchor="w", rely=0.90, relx=0.63)
-    keyword = StringVar()
-    CTkEntry(body_frame, textvariable=keyword, justify="right", font=(fontstyle, 13)).place(anchor="w", rely=0.90, relx=0.68)
+        CTkLabel(body_frame, text="Size", font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.48)
+        size = StringVar()
+        CTkEntry(body_frame, textvariable=size, font=(fontstyle, 13)).place(anchor="w", rely=0.55, relx=0.52)
 
-    search_by = StringVar()
-    search_by.set("code no")
-    CTkComboBox(body_frame, variable=search_by, values=["code no", "pro name", "pro size"],
-    width=90, state = "readonly", font=(fontstyle, 13)).place(anchor="w", rely=0.90, relx=0.81)
-    CTkButton(body_frame, text="SEARCH", command=search, font=(fontstyle, 13), width=30).place(anchor="w", rely=0.90, relx=0.90)
+        CTkLabel(body_frame, text="Keyword", font=(fontstyle, 13)).place(anchor="w", rely=0.90, relx=0.63)
+        keyword = StringVar()
+        CTkEntry(body_frame, textvariable=keyword, justify="right", font=(fontstyle, 13)).place(anchor="w", rely=0.90, relx=0.68)
 
-    CTkButton(body_frame, text="UPDATE", command=update_data, font=(fontstyle, 13), width=30).place(anchor="w", rely=0.90, relx=0.03)
-    CTkButton(body_frame, text="DELETE", command=delete_data, font=(fontstyle, 13), width=30).place(anchor="w", rely=0.90, relx=0.10)
+        search_by = StringVar()
+        search_by.set("code no")
+        CTkComboBox(body_frame, variable=search_by, values=["code no", "pro name", "pro size"],
+        width=90, state = "readonly", font=(fontstyle, 13)).place(anchor="w", rely=0.90, relx=0.81)
+        CTkButton(body_frame, text="SEARCH", command=search, font=(fontstyle, 13), width=30).place(anchor="w", rely=0.90, relx=0.90)
 
-    tv3frame = Frame(child6, style="TV.TEntry", height=470)
-    tv3frame.pack(fill="x")
+        CTkButton(body_frame, text="UPDATE", command=update_data, font=(fontstyle, 13), width=30).place(anchor="w", rely=0.90, relx=0.03)
+        CTkButton(body_frame, text="DELETE", command=delete_data, font=(fontstyle, 13), width=30).place(anchor="w", rely=0.90, relx=0.10)
 
-    scrollbar = Scrollbar(tv3frame)
-    scrollbar.pack(side=RIGHT, fill=Y)
+        tv3frame = Frame(child6, style="TV.TEntry", height=470)
+        tv3frame.pack(fill="x")
 
-    tvstyle = Style()
-    tvstyle.configure("mystyle.Treeview", font=(fontstyle, 10))
-    tvstyle.configure("mystyle.Treeview.Heading", font=(fontstyle, 10, "bold"), justify="center")
+        scrollbar = CTkScrollbar(tv3frame)
+        scrollbar.pack(side=RIGHT, fill=Y)
 
-    treeview3 = Treeview(tv3frame, style="mystyle.Treeview", column=["1", "2", "3", "4", "5", "6"],
-                        yscrollcommand=scrollbar.set, height=22)
-    
-    treeview3["show"] = "headings"
-    treeview3.heading("1", text="Code No")
-    treeview3.column("1", width=100, anchor=CENTER)
-    treeview3.heading("2", text="Product Name")
-    treeview3.column("2", width=150, anchor=CENTER)
-    treeview3.heading("3", text="Short Name")
-    treeview3.column("3", width=100, anchor=CENTER)
-    treeview3.heading("4", text="Quantity")
-    treeview3.column("4", width=100, anchor=CENTER)
-    treeview3.heading("5", text="Price")
-    treeview3.column("5", width=100, anchor=CENTER)
-    treeview3.heading("6", text="Size")
-    treeview3.column("6", width=150, anchor=CENTER)
-    treeview3.bind("<ButtonRelease-1>", set_data_3)
-    treeview3.pack(fill="x")
+        tvstyle = Style()
+        tvstyle.configure("mystyle.Treeview", font=(fontstyle, 10))
+        tvstyle.configure("mystyle.Treeview.Heading", font=(fontstyle, 10, "bold"), justify="center")
 
-    child6.mainloop()  # Make this windows runs infinite amount of time
+        treeview3 = Treeview(tv3frame, style="mystyle.Treeview", column=["1", "2", "3", "4", "5", "6"],
+                            yscrollcommand=scrollbar.set, height=22)
+        
+        treeview3["show"] = "headings"
+        treeview3.heading("1", text="Code No")
+        treeview3.column("1", width=100, anchor=CENTER)
+        treeview3.heading("2", text="Product Name")
+        treeview3.column("2", width=150, anchor=CENTER)
+        treeview3.heading("3", text="Short Name")
+        treeview3.column("3", width=100, anchor=CENTER)
+        treeview3.heading("4", text="Quantity")
+        treeview3.column("4", width=100, anchor=CENTER)
+        treeview3.heading("5", text="Price")
+        treeview3.column("5", width=100, anchor=CENTER)
+        treeview3.heading("6", text="Size")
+        treeview3.column("6", width=150, anchor=CENTER)
+        treeview3.bind("<ButtonRelease-1>", set_data_3)
+        treeview3.pack(fill="x")
+
+        child6.wm_protocol("WM_DELETE_WINDOW", lambda: change_state(4, child6))
+        child6.mainloop()  # Make this windows runs infinite amount of time
 
 
 # this function takecare of reducing
@@ -1137,7 +1166,7 @@ def checkout():
         bill_no_creation()
 
         dis_value = StringVar()
-        CTkEntry(child8, textvariable=dis_value, width=10, justify="right", font=(fontstyle, 13)).place(anchor="w", rely=0.950, relx=0.15)
+        CTkEntry(child8, textvariable=dis_value, width=10, justify="right", font=(fontstyle, 13)).place(anchor="w", rely=0.950, relx=0.015)
         CTkButton(child8, text="Apply Discount", command=apply_discount, font=(fontstyle, 13)).place(anchor="w", rely=0.950, relx=0.01)
 
         total_var = StringVar()
@@ -1149,7 +1178,7 @@ def checkout():
                                                                                        relx=0.79)
 
         af_arrow_image = PhotoImage(file="images/af_arrow_image.png")
-        CTkButton(child8, image=af_arrow_image, command=billed, font=(fontstyle, 13)).place(anchor="w", rely=0.03, relx=0.95)
+        CTkButton(child8, image=af_arrow_image, text="", width=30,command=billed, font=(fontstyle, 13)).place(anchor="w", rely=0.03, relx=0.90)
 
         child8.protocol("WM_DELETE_WINDOW", lambda: change_state(5, child8))
         child8.mainloop()
@@ -1329,7 +1358,6 @@ def return_stock(event=None):
         quan.set(row[2])
         return
         
-
     def search_id():
         if bill_no.get() == "":
             return messagebox.showwarning("WARNING", "BILL NUMBER IS EMPTY") 
@@ -1350,38 +1378,40 @@ def return_stock(event=None):
         return_stock_window = 0
         child10 = CTkToplevel(root)
         child10.title("Return Stock")
-        child10.geometry("400x600+450+100")
+        child10.geometry("400x600+450+50")
         child10.resizable(False, False)
 
-        top_frame = Frame(child10, style="T.TFrame", height=75)
+        top_frame = CTkFrame(child10, height=75)
         top_frame.pack(fill="x")
 
-        CTkLabel(top_frame, text="RETURN ITEM").place(anchor="w", rely=0.10, relx=0.35)
-
-        CTkLabel(top_frame, text="BILL NO").place(anchor="w", rely=0.65, relx=0.15)
-        bill_no = StringVar()
-        CTkEntry(top_frame, textvariable=bill_no, justify="right").place(anchor="w", rely=0.65, relx=0.30)
-        search_image = PhotoImage(file="images/search_image.png")
-        CTkButton(top_frame, text="Search", image=search_image, compound="left", command=search_id).place(anchor="w", rely=0.65, relx=0.65)
-
-        body_frame = Frame(child10, height=480)
+        body_frame = CTkFrame(child10, height=500)
         body_frame.pack(fill="x")
 
-        last_frame = Frame(child10, height=50)
-        last_frame.pack(fill="x")
-                
-        CTkLabel(last_frame, text="QUAN").place(anchor="w", rely=0.40, relx=0.05)
-        quan = StringVar()
-        Entry(last_frame, textvariable=quan, width=15, justify="center", state="readonly").place(anchor="w", rely=0.40, relx=0.16)
+        last_frame = CTkFrame(child10, height=50)
+        last_frame.pack(fill="both", side="bottom")
 
-        CTkLabel(last_frame, text="-------------").place(anchor="w", rely=0.40, relx=0.40)
+        CTkLabel(top_frame, text="RETURN ITEM", font=(fontstyle, 13, "bold")).place(anchor="w", rely=0.10, relx=0.35)
+
+        CTkLabel(top_frame, text="BILL NO", font=(fontstyle, 13)).place(anchor="w", rely=0.65, relx=0.15)
+        bill_no = StringVar()
+        CTkEntry(top_frame, textvariable=bill_no, justify="right", font=(fontstyle, 13)).place(anchor="w", rely=0.65, relx=0.30)
+        search_image = PhotoImage(file="images/search_image.png")
+        CTkButton(top_frame, text="SEARCH",command=search_id, font=(fontstyle, 13), width=40).place(anchor="w", rely=0.65, relx=0.68)
+
+       
+                
+        CTkLabel(last_frame, text="QUAN", font=(fontstyle, 13)).place(anchor="w", rely=0.40, relx=0.05)
+        quan = StringVar()
+        CTkEntry(last_frame, textvariable=quan, width=90, justify="center", state="readonly", font=(fontstyle, 13)).place(anchor="w", rely=0.40, relx=0.16)
+
+        CTkLabel(last_frame, text="-------------", font=(fontstyle, 13)).place(anchor="w", rely=0.40, relx=0.40)
 
         return_quan = StringVar()
-        CTkEntry(last_frame, textvariable=return_quan, width = 15).place(anchor="w", rely=0.40, relx=0.55)
+        CTkEntry(last_frame, textvariable=return_quan, width = 50, font=(fontstyle, 13)).place(anchor="w", rely=0.40, relx=0.55)
         
-        CTkButton(last_frame, text="RETURN", command=return_item).place(anchor="w", rely=0.40, relx=0.80)
+        CTkButton(last_frame, text="RETURN", command=return_item, font=(fontstyle, 13), width=30).place(anchor="w", rely=0.40, relx=0.70)
 
-        scrollbar = Scrollbar(body_frame)
+        scrollbar = CTkScrollbar(body_frame)
         scrollbar.pack(side="right", fill="y")
         
         tvStyle = Style()
@@ -1389,7 +1419,7 @@ def return_stock(event=None):
         tvStyle.configure("mystyle.Treeview", font=(fontstyle, 10))
         tvStyle.configure("mystyle.Treeview.Heading", font=(fontstyle, 10, "bold"), justify="center")
         
-        treeview4 = Treeview(body_frame, columns=["1", "2", "3", "4"], yscrollcommand=scrollbar.set, height=23)
+        treeview4 = Treeview(body_frame, columns=["1", "2", "3", "4"], yscrollcommand=scrollbar.set, height=21)
 
         treeview4['show'] = "headings"
         treeview4.heading("1", text="S.NO")
@@ -1401,7 +1431,7 @@ def return_stock(event=None):
         treeview4.heading("4", text="Price")
         treeview4.column("4", width=80, anchor="center")
         treeview4.bind("<ButtonRelease-1>", set_data)
-        treeview4.pack(fill="x")
+        treeview4.pack(fill="both")
 
         child10.protocol("WM_DELETE_WINDOW", lambda : change_state(10, child10))
         child10.wm_transient(root)
@@ -1430,14 +1460,19 @@ def change_appearance(choosen_theme, event=None):
     global theme
     global config
 
-    if(choosen_theme == "dark" and theme=="light") or (choosen_theme == "light" and theme=="dark"):
+    if(choosen_theme == "dark" and theme=="light"):
         theme = "dark"
+        config.set("SectionOne","theme",choosen_theme)
+        print("it is happened")
+    if(choosen_theme == "light" and theme=="dark"):
+        theme = "light"
         config.set("SectionOne","theme",choosen_theme)
 
     with open('files/configuration.ini', 'w') as configfile:
                 config.write(configfile)
                 
     set_appearance_mode(choosen_theme)
+
 
 def change_font(new_font):
     config = configparser.ConfigParser()
@@ -1462,8 +1497,6 @@ if __name__ == '__main__':
     theme = config.get("SectionOne","theme")
     global fontstyle
     fontstyle = config.get("SectionTwo","font")
-        
-    
 
     #login()
     # '''
@@ -1473,17 +1506,19 @@ if __name__ == '__main__':
     global word
     global key
     global verify
+    global mwindow
     global help_window
     global edit_window
     global search_window
     global report_window
     global checkout_window
-    global add_stocK_window
+    global add_stock_window
     global return_stock_window
 
     crow = []
     arow = 1
     word = ""
+    mwindow = 1
     report_window = 1
     help_window = 1
     edit_window = 1
@@ -1503,6 +1538,10 @@ if __name__ == '__main__':
     screen_height = root.winfo_screenheight()
     root.geometry("{}x{}+{}+{}".format(screen_width, screen_height, -10, -2))
 
+    #changin the default font style of the page.
+    default_font = font.nametofont("TkDefaultFont")
+    default_font.configure(family=fontstyle, weight="bold")
+
     root.title("Billing System")
     root.resizable(True, True)
     titleImage = PhotoImage(file="images/title_icon.png")
@@ -1517,9 +1556,10 @@ if __name__ == '__main__':
 
     # adding menus namely help and exit
     menubar = Menu(root, activebackground="orange")
-
+    menubar.config(font=(fontstyle, 10))
     # file menu
     file = Menu(menubar, tearoff=0, relief=RIDGE, activebackground="orange")
+    file.config(font=(fontstyle, 10))
     # edit menu
     edit = Menu(menubar, tearoff=0, relief=RIDGE, activebackground="orange")
     # inventory menu
@@ -1549,10 +1589,10 @@ if __name__ == '__main__':
     #creating sub menu for font menu
     fontMenu = Menu(file,tearoff=0, relief=RIDGE, activebackground="orange")
     file.add_cascade(label="Fonts", menu=fontMenu)
-    fontMenu.add_command(label="Roboto", font=("Roboto"), command=lambda: change_font("Roboto"))
-    fontMenu.add_command(label="Times New Roman", command=lambda: change_font("Times New Roman"))
-    fontMenu.add_command(label="Arial",font=("Arial"), command=lambda: change_font("Segoe UI"))
-    fontMenu.add_command(label="Calibri", font=("Calibri"),command=lambda: change_font("Calibri"))
+    fontMenu.add_command(label="Roboto", font=("Roboto", 10), command=lambda: change_font("Roboto"))
+    fontMenu.add_command(label="Times New Roman", font=("Times New Roman", 10), command=lambda: change_font("Times New Roman"))
+    fontMenu.add_command(label="Arial",font=("Arial", 10), command=lambda: change_font("Segoe UI"))
+    fontMenu.add_command(label="Calibri", font=("Calibri", 10),command=lambda: change_font("Calibri"))
 
     #creating sub menu for theme menu
     themeMenu = Menu(file,tearoff=0, relief=RIDGE, activebackground="orange")
